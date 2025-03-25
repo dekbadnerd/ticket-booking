@@ -1,19 +1,27 @@
 package main
 
 import (
-	"github.com/dekbadnerd/ticket-booking/repositories"
+	"fmt"
+
+	"github.com/dekbadnerd/ticket-booking/config"
+	"github.com/dekbadnerd/ticket-booking/db"
 	"github.com/dekbadnerd/ticket-booking/handlers"
+	"github.com/dekbadnerd/ticket-booking/repositories"
 	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
+
+	envConfig := config.NewEnvConfig()
+	db := db.Init(envConfig, db.DBMigrator)
+
 	app := fiber.New(fiber.Config{
 		AppName:      "Ticket Booking",
 		ServerHeader: "Fiber",
 	})
 
 	//Repository
-	eventRepository := repositories.NewEventRepository(nil)
+	eventRepository := repositories.NewEventRepository(db)
 
 	//router
 	server := app.Group("/api")
@@ -21,5 +29,5 @@ func main() {
 	//Handler
 	handlers.NewEventHandler(server.Group("/event"), eventRepository)
 
-	app.Listen(":3000")
+	app.Listen(fmt.Sprintf(":" + envConfig.ServerPort))
 }
