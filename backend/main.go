@@ -6,7 +6,9 @@ import (
 	"github.com/dekbadnerd/ticket-booking/config"
 	"github.com/dekbadnerd/ticket-booking/db"
 	"github.com/dekbadnerd/ticket-booking/handlers"
+	"github.com/dekbadnerd/ticket-booking/middlewares"
 	"github.com/dekbadnerd/ticket-booking/repositories"
+	"github.com/dekbadnerd/ticket-booking/services"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -23,13 +25,20 @@ func main() {
 	//Repository
 	eventRepository := repositories.NewEventRepository(db)
 	ticketRepository := repositories.NewTicketRepository(db)
+	authRepository := repositories.NewAuthRepository(db)
+
+	//Service
+	authService := services.NewAuthService(authRepository)
 
 	//router
 	server := app.Group("/api")
+	handlers.NewAuthHandler(server.Group("/auth"), authService)
+
+	privateRoutes := server.Use(middlewares.AuthProtected(db))
 
 	//Handler
-	handlers.NewEventHandler(server.Group("/event"), eventRepository)
-	handlers.NewTicketHandler(server.Group("/ticket"), ticketRepository)
+	handlers.NewEventHandler(privateRoutes.Group("/event"), eventRepository)
+	handlers.NewTicketHandler(privateRoutes.Group("/ticket"), ticketRepository)
 
 	app.Listen(fmt.Sprintf(":" + envConfig.ServerPort))
 }
