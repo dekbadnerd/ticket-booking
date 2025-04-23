@@ -7,11 +7,18 @@ import { Input } from "@/components/Input";
 import { useState } from "react";
 import { Button } from "@/components/Button";
 import { Divider } from "@/components/Divider";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Login() {
+    const {authenticate, isLoadingAuth} = useAuth()
+
     const [authMode, setAuthMode] = useState<"login" | "register">("login")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
+    async function onAuthenticate() {
+        await authenticate(authMode, email, password)
+    }
 
     const onToggleAuthMode = () => {
         setAuthMode(prevMode => prevMode === "login" ? "register" : "login")
@@ -57,8 +64,8 @@ export default function Login() {
                         </VStack>
 
                         <Button
-                            isLoading={false} //TODO: Finish this once Auth Provider is ready
-                            onPress={() => {}} //TODO:Finish this once Auth Provider is ready
+                            isLoading={isLoadingAuth} 
+                            onPress={onAuthenticate} 
                         >
                             {authMode === "login" ? "Login" : "Register"}
                         </Button>
