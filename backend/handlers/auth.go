@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/dekbadnerd/ticket-booking/models"
-	"github.com/go-playground/validator/v10"
+	"github.com/go-playground/validator/v10" //validate struct field
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -22,6 +22,7 @@ func (h *AuthHandler) Login(ctx *fiber.Ctx) error {
 	context, cancel := context.WithTimeout(context.Background(), time.Duration(5*time.Second))
 	defer cancel()
 
+	//Convert body to AuthCredential struct
 	if err := ctx.BodyParser(&creds); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
 			"status":  "failed",
@@ -30,6 +31,7 @@ func (h *AuthHandler) Login(ctx *fiber.Ctx) error {
 		})
 	}
 
+	//Validate struct
 	if err := validate.Struct(creds); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
 			"status":  "failed",
@@ -46,6 +48,7 @@ func (h *AuthHandler) Login(ctx *fiber.Ctx) error {
 		})
 	}
 
+	//Reply token and user data
 	return ctx.Status(fiber.StatusOK).JSON(&fiber.Map{
 		"status":  "success",
 		"message": "Successfully login",

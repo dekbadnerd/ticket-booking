@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+//Map with Table Ticket
 type Ticket struct {
 	ID        uint      `json:"id" gorm:"primaryKey;autoIncrement"`
 	EventID   uint      `json:"eventId"`
@@ -15,6 +16,7 @@ type Ticket struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
+//methods for handling Ticket data
 type TicketRepository interface {
 	GetMany(ctx context.Context, userId uint) ([]*Ticket, error)
 	GetOne(ctx context.Context, userId uint, ticketId uint) (*Ticket, error)
@@ -22,6 +24,7 @@ type TicketRepository interface {
 	UpdateOne(ctx context.Context, userId uint, ticketId uint, updateData map[string]interface{}) (*Ticket, error)
 }
 
+//Validate QRCode
 type ValidateTicket struct {
 	TicketId uint `json:"ticketId"`
 	OwnerId  uint `json:"ownerId"`

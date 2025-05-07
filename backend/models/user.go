@@ -13,6 +13,7 @@ const (
 	Attendee UserRole = "attendee"
 )
 
+//User data
 type User struct {
 	ID        uint      `json:"id" gorm:"primaryKey;autoIncrement"`
 	Email     string    `json:"email" gorm:"text;not null"`
@@ -22,9 +23,10 @@ type User struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
+//After successful user creation
 func (u *User) AfterCreate(db *gorm.DB) (err error) {
 	if u.ID == 1 {
-		db.Model(u).Update("role", Manager)
+		db.Model(u).Update("role", Manager) 
 	}
 	return
 }

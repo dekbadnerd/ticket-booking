@@ -4,6 +4,7 @@ WORKDIR /src/app
 
 RUN go install github.com/cosmtrek/air@v1.45.0
 
-COPY . .
+# host -> container
+COPY . . 
 
 RUN go mod tidy

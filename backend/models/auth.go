@@ -2,21 +2,24 @@ package models
 
 import (
 	"context"
-	"net/mail"
+	"net/mail" //Check email format
 
-	"golang.org/x/crypto/bcrypt"
+	"golang.org/x/crypto/bcrypt" //hash password
 )
 
+//Storing Login/Register data
 type AuthCredential struct {
 	Email    string `json:"email" validate:"required"`
 	Password string `json:"password" validate:"required"`
 }
 
+//methods for handling User data
 type AuthRepository interface {
 	RegisterUser(ctx context.Context, RegisterData *AuthCredential) (*User, error)
 	GetUser(ctx context.Context, query interface{}, args ...interface{}) (*User, error)
 }
 
+//Authentication Service
 type AuthService interface {
 	Login(ctx context.Context, loginData *AuthCredential) (string, *User, error)
 	Register(ctx context.Context, registerData *AuthCredential) (string, *User, error)

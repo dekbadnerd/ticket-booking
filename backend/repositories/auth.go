@@ -11,6 +11,7 @@ type AuthRepository struct {
 	db *gorm.DB
 }
 
+//Save new User data to Database
 func (r *AuthRepository) RegisterUser(ctx context.Context, registerData *models.AuthCredential) (*models.User, error) {
 	user := &models.User{
 		Email: registerData.Email,
@@ -26,6 +27,7 @@ func (r *AuthRepository) RegisterUser(ctx context.Context, registerData *models.
 	return user, nil
 }
 
+//Search user data from databse with condition
 func (r *AuthRepository) GetUser(ctx context.Context, query interface{}, args ...interface{}) (*models.User, error) {
 	user := &models.User{}
 	res := r.db.Model(user).Where(query, args...).First(user)

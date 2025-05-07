@@ -13,7 +13,7 @@ import { Divider } from "@/components/Divider"
 import { Button } from "@/components/Button"
 import { useNavigation } from "@react-navigation/native"
 import { useFocusEffect } from "@react-navigation/native"
-
+import { ticketService } from "@/services/ticket"
 
 export default function EventsScreen() {
     const {user} = useAuth()
@@ -22,9 +22,9 @@ export default function EventsScreen() {
     const [isLoading, setIsLoading] = useState(false)
     const [events, setEvents] = useState<Event[]>([])
 
-    const buyTicket = (id: number) => {
+    async function buyTicket(id: number){
         try {
-            //await ticketService.createOne(id)
+            await ticketService.createOne(id)
             Alert.alert("Success", "Ticket Purchased Successfully")  
         } catch (error) {
             Alert.alert("Error", "Failed to buy ticket")  
@@ -96,13 +96,13 @@ export default function EventsScreen() {
 
                             <HStack justifyContent="space-between" pt={15}>
                                 <Text bold fontSize={16} color="gray">Sold: {event.totalTicketsPurchased}</Text>
-                                <Text bold fontSize={16} color="green">Entered: {event.totalTicketsPurchased}</Text>
+                                <Text bold fontSize={16} color="green">Entered: {event.totalTicketsEntered}</Text>
                             </HStack>
 
                             {user?.role === UserRole.Attendee && ( 
                                 <VStack py={15}>
                                     <Button 
-                                        variant="contained"
+                                        variant="outlined"
                                         disabled={isLoading}
                                         onPress={ () => buyTicket(event.id) } 
                                     >

@@ -7,6 +7,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+//Store require Environment variable
 type EnvConfig struct {
 	ServerPort string `env:"SERVER_PORT,required"`
 	DBHost     string `env:"DB_HOST,required"`
@@ -16,6 +17,7 @@ type EnvConfig struct {
 	DBSSLMode  string `env:"DB_SSLMODE,required"`
 }
 
+//load env for map struct
 func NewEnvConfig() *EnvConfig {
 	err := godotenv.Load()
 

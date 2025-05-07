@@ -1,21 +1,21 @@
 services:
   app: 
     tty: true # Keep the container running
-    restart: always
+    restart: always # if container down, restart auto
     image: ticket-booking
     container_name: ticket-booking
     build: .
     ports:
-      - 3000:3000
+      - 3000:3000 
     env_file:
       - .env
     networks:
-      - application
+      - application #Bind container to network named application.
     depends_on:
-      - db
+      - db  #Start when db ready
     volumes:
-      - .:/src/app
-    command: air -c .air.toml
+      - .:/src/app # bind mount code local into container (hot reload)
+    command: air -c .air.toml # Run Air following config file
 
   db:
     image: postgres:alpine
@@ -27,11 +27,11 @@ services:
     ports: 
       - 5432:5432
     volumes:
-      - postgres-db:/var/lib/postgresql/data
+      - postgres-db:/var/lib/postgresql/data #store persistent database data
     networks:
       - application
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"] #Check if db ready
       interval: 10s
       timeout: 5s
       retries: 5

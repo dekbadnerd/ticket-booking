@@ -13,8 +13,9 @@ import (
 )
 
 func main() {
-
 	envConfig := config.NewEnvConfig()
+
+	//Connect to Database (Postgres), Auto Migration 
 	db := db.Init(envConfig, db.DBMigrator)
 
 	app := fiber.New(fiber.Config{
@@ -34,6 +35,7 @@ func main() {
 	server := app.Group("/api")
 	handlers.NewAuthHandler(server.Group("/auth"), authService)
 
+	//Middleware Check Token before next route 
 	privateRoutes := server.Use(middlewares.AuthProtected(db))
 
 	//Handler

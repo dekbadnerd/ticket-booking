@@ -10,13 +10,14 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-// database connection
+// database connection and migrate table
 func Init(config *config.EnvConfig, DBMigrator func(db *gorm.DB) error ) *gorm.DB {
 	uri := fmt.Sprintf(`
 		host=%s user=%s password=%s dbname=%s port=5432 sslmode=%s `,
 		config.DBHost, config.DBUser, config.DBPassword, config.DBName, config.DBSSLMode,
 	)
 
+	//Open DB connection with GORM
 	db, err := gorm.Open(postgres.Open(uri), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})

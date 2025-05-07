@@ -1,11 +1,11 @@
 import { User } from "@/types/user"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage" //Store token/user
 import { createContext, PropsWithChildren, useContext, useEffect } from "react"
 import { useState } from "react"
 import { router } from "expo-router"
 import { userService } from "@/services/user"
 
-
+//Data format for other components
 interface AuthContextProps {
     isLoggedIn: boolean
     isLoadingAuth: boolean
@@ -26,6 +26,7 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
     const [isLoadingAuth, setIsLoadingAuth] = useState(false)
     const [user, setUser] = useState<User | null>(null)
 
+    //When app loading -> Check if token/user on device
     useEffect(() => {
         async function checkIfLoggedIn() {
             const token = await AsyncStorage.getItem("token")
@@ -33,7 +34,7 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 
             if(token && user) {
                 setIsLoggedIn(true)
-                setUser(JSON.parse(user))
+                setUser(JSON.parse(user)) //Conevert string -> obj
                 router.replace("/(authed)/(tabs)/(events)");
             } else {
                 setIsLoggedIn(false)
@@ -43,17 +44,21 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
         checkIfLoggedIn()
     }, [])
 
+    //login & register
     async function authenticate(authMode: "login" | "register", email:string, password:string): Promise<void> {
         try {
-            setIsLoadingAuth(true)
+            setIsLoadingAuth(true) 
 
-            const response = await userService[authMode]({email, password})
+            const response = await userService[authMode]({email, password}) //Call login/register API
 
             if (response) {
                 const {data} =response
                 const {user, token} = data
+
+                //Save token/user to device
                 await AsyncStorage.setItem("token", token)
                 await AsyncStorage.setItem("user", JSON.stringify(user))
+
                 setUser(user)
                 router.replace("/(authed)/(tabs)/(events)")
                 setIsLoggedIn(true)
@@ -71,6 +76,7 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
         await AsyncStorage.removeItem("user")
     }
 
+    //Send all values ​​to child components 
     return (
         <AuthContext.Provider
             value={{

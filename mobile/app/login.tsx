@@ -16,6 +16,7 @@ export default function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    //When pressing the Login/Register button
     async function onAuthenticate() {
         await authenticate(authMode, email, password)
     }

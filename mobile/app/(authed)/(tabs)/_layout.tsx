@@ -3,12 +3,16 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import { Text } from 'react-native';
 import { ComponentProps } from 'react';
+import { UserRole } from '@/types/user';
+import { useAuth } from '@/context/AuthContext';
 
 
 export default function TabLayout() {
+
+    const {user} = useAuth()
     const tabs = [
         {
-            showFor: [],
+            showFor: [UserRole.Attendee, UserRole.Manager],
             name: "(events)",
             displayName: "Events",
             icon: "calendar",
@@ -17,7 +21,7 @@ export default function TabLayout() {
             }
         },
         {
-            showFor: [],
+            showFor: [UserRole.Attendee],
             name: "(tickets)",
             displayName: "My Tickets",
             icon: "ticket",
@@ -26,7 +30,7 @@ export default function TabLayout() {
             }
         },
         {
-            showFor: [],
+            showFor: [UserRole.Manager],
             name: "scan-ticket",
             displayName: "Scan Ticket",
             icon: "qrcode",
@@ -35,7 +39,7 @@ export default function TabLayout() {
             }
         },
         {
-            showFor: [],
+            showFor: [UserRole.Attendee, UserRole.Manager],
             name: "settings",
             displayName: "Settings",
             icon: "cogs",
@@ -54,7 +58,7 @@ export default function TabLayout() {
                     options={{
                         ...tab.options,
                         headerTitle: tab.displayName,
-                        // href: tab.showFor.includes()
+                        href: tab.showFor.includes(user?.role!) ? tab.name as any : null,
                         tabBarLabel: ({focused}) => (
                             <Text style= {{color: focused ? "black" : "gray", fontSize: 12}}>
                                 {tab.displayName}

@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//Map with Table Event
 type Event struct {
 	ID                    uint      `json:"id" gorm:"primaryKey;autoIncrement"`
 	Name                  string    `json:"name"`
@@ -18,6 +19,7 @@ type Event struct {
 	UpdatedAt             time.Time `json:"updatedAt"`
 }
 
+//methods for handling Event data
 type EventRepository interface {
 	GetMany(ctx context.Context) ([]*Event, error)
 	GetOne(ctx context.Context, eventId uint) (*Event, error)
@@ -26,7 +28,9 @@ type EventRepository interface {
 	DeleteOne(ctx context.Context, eventId uint) error
 }
 
+//Called after the Event query(SELECT) is complete
 func (e *Event) AfterFind(db *gorm.DB) (err error) {
+	//Count the number of Tickets with EventID matching this Event
 	baseQuery := db.Model(&Ticket{}).Where(&Ticket{EventID: e.ID})
 
 	if res := baseQuery.Count(&e.TotalTicketsPurchased); res.Error != nil {

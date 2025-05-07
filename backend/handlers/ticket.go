@@ -16,11 +16,12 @@ type TicketHandler struct {
 	repository models.TicketRepository
 }
 
+//Get all user Tickets
 func (h *TicketHandler) GetMany(ctx *fiber.Ctx) error {
 	context, cancel := context.WithTimeout(context.Background(), time.Duration(5*time.Second))
 	defer cancel()
 
-	userId := uint(ctx.Locals("userId").(float64))
+	userId := uint(ctx.Locals("userId").(float64)) //userId injected by auth middleware
 
 	tickets, err := h.repository.GetMany(context, userId)
 
@@ -38,6 +39,7 @@ func (h *TicketHandler) GetMany(ctx *fiber.Ctx) error {
 	})
 }
 
+//Get Ticket + Generate QR code
 func (h *TicketHandler) GetOne(ctx *fiber.Ctx) error {
 	context, cancel := context.WithTimeout(context.Background(), time.Duration(5*time.Second))
 	defer cancel()
@@ -78,6 +80,7 @@ func (h *TicketHandler) GetOne(ctx *fiber.Ctx) error {
 	})
 }
 
+//Buy Ticket
 func (h *TicketHandler) CreateOne(ctx *fiber.Ctx) error {
 	context, cancel := context.WithTimeout(context.Background(), time.Duration(5*time.Second))
 	defer cancel()
@@ -109,6 +112,7 @@ func (h *TicketHandler) CreateOne(ctx *fiber.Ctx) error {
 	})
 }
 
+//Validate QR code
 func (h *TicketHandler) ValidateOne(ctx *fiber.Ctx) error {
 	context, cancel := context.WithTimeout(context.Background(), time.Duration(5*time.Second))
 	defer cancel()
@@ -142,6 +146,7 @@ func (h *TicketHandler) ValidateOne(ctx *fiber.Ctx) error {
 	})
 }
 
+//Bind routes to handler functions
 func NewTicketHandler(router fiber.Router, repository models.TicketRepository) {
 	handler := &TicketHandler{
 		repository: repository,
