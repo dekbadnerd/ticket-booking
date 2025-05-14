@@ -36,8 +36,27 @@ services:
       timeout: 5s
       retries: 5
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: ticket-booking-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ticket.dev
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - application
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
 networks:
   application:
 
 volumes:
   postgres-db:
+  pgadmin-data:
+
+
+

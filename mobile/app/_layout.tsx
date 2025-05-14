@@ -7,6 +7,7 @@ export default function Root() {
     <>
       <StatusBar style='dark'/>
       <AuthenticationProvider>
+      {/*render the current page based on the URL path */}
       <Slot />
       </AuthenticationProvider>
     </>

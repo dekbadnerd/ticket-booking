@@ -1,5 +1,5 @@
 import { ShortcutProps, defaultShortcuts } from "@/style/shortcuts";
-import {ActivityIndicator, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { ActivityIndicator, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { Text } from "./Text";
 import { StyleSheet } from "react-native";
 

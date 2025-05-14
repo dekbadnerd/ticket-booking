@@ -8,7 +8,7 @@ import { useAuth } from '@/context/AuthContext';
 
 
 export default function TabLayout() {
-
+    // Get info from context (used to check role)
     const {user} = useAuth()
     const tabs = [
         {

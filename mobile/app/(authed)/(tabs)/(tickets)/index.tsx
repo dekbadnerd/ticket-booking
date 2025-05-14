@@ -30,6 +30,7 @@ export default function TicketScreen() {
         }
     }
 
+    //Reload ticket every time this page is focused
     useFocusEffect(useCallback(() => {fetchTickets()}, []))
 
     useEffect(() => {navigation.setOptions({headerTitle: "Tickets", })}, [navigation])

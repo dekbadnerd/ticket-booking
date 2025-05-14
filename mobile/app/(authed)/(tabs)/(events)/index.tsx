@@ -50,7 +50,7 @@ export default function EventsScreen() {
             setIsLoading(false)
         }
     }
-
+    //Reload every time the user returns to this screen
     useFocusEffect(useCallback(() => {fetchEvents()}, []))
 
     useEffect(() => {
