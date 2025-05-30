@@ -14,6 +14,27 @@ The system features JWT authentication, PostgreSQL database integration, and Doc
 - Mobile application built with React Native (Expo)
 - Dockerized backend and database
 
+## 🌐 How to Use ngrok with React Native
+
+### 1️⃣ Install ngrok
+```bash
+npm install -g ngrok
+```
+
+### 2️⃣ Start ngrok to expose your API
+```bash
+ngrok http 3000
+```
+You'll get an HTTPS URL like
+```bash
+https://683c-2405-9800-b870-3e32-8b7-720f-e240-d630.ngrok-free.app
+```
+
+### 3️⃣ Update your React Native API URL (In api.ts)
+```bash
+const url = "https://YOUR_NGROK_URL.ngrok-free.app";
+```
+
 ## 🚀 How to Run the Project
 
 ### 🖥️ Backend (API Server)
