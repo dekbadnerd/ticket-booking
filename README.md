@@ -1,9 +1,9 @@
 # 🎟️ Ticket Booking System
 
 ## 📖 Project Description
-A fullstack ticket booking system that allows users to register, log in, manage events, and purchase tickets with QR code validation.  
-The backend is built using Go (Fiber framework), and the frontend is a mobile app developed with React Native (TypeScript).  
-The system features JWT authentication, PostgreSQL database integration, and Docker support for deployment.
+- A fullstack ticket booking system that allows users to register, log in, manage events, and purchase tickets with QR code validation.  
+- The backend is built using Go (Fiber framework) and the frontend is a mobile app developed with React Native (TypeScript).  
+- The system features JWT authentication, PostgreSQL database integration and Docker support for deployment.
 
 ## 🎯 Main Features
 - User authentication (Register/Login) with JWT
